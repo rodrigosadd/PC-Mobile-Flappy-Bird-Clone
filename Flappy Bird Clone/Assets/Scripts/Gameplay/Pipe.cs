@@ -18,6 +18,19 @@ public class Pipe : MonoBehaviour
     [SerializeField] private GameObject _pipeNightUpSprite;
     [SerializeField] private GameObject _pipeNightDownSprite;
 
+    [Header("Channel")]
+    [SerializeField] private FloatEventChannelSO _setSpeedPipeFloatChannel;
+
+    void OnEnable()
+    {
+        _setSpeedPipeFloatChannel.OnFloatRequested += SetSpeed;
+    }
+
+    void OnDisable()
+    {
+        _setSpeedPipeFloatChannel.OnFloatRequested -= SetSpeed;        
+    }
+
     void Start()
     {
         if (_balancingContainer.pipeSpeed > 0f)
@@ -51,5 +64,10 @@ public class Pipe : MonoBehaviour
             _pipeNightUpSprite.SetActive(true);
             _pipeNightDownSprite.SetActive(true);
         }
+    }
+
+    void SetSpeed(float speed)
+    {
+        _speed = speed;
     }
 }

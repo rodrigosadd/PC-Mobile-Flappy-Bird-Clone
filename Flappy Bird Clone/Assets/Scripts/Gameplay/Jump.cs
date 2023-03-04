@@ -18,17 +18,20 @@ public class Jump : MonoBehaviour
     [SerializeField] private float _gravityScale;
     [SerializeField] private float _gravityScaleAfterTime;
 
-    [Header("Channel")]
+    [Header("Channels")]
     [SerializeField] private VoidEventChannelSO _jumpVoidChannel;    
+    [SerializeField] private BoolEventChannelSO _setRbodySimulatedBoolChannel;    
 
     void OnEnable()
     {
         _jumpVoidChannel.OnVoidRequested += Jumping;
+        _setRbodySimulatedBoolChannel.OnBoolRequested += SetRBodySimulated;
     }
 
     void OnDisable()
     {
         _jumpVoidChannel.OnVoidRequested -= Jumping;        
+        _setRbodySimulatedBoolChannel.OnBoolRequested -= SetRBodySimulated;
     }
 
     private void Update()
@@ -42,7 +45,7 @@ public class Jump : MonoBehaviour
 
         _rbody.velocity = Vector3.zero;
         _rbody.AddForce(Vector2.up * _jumpForce, ForceMode2D.Impulse);
-        if(!_rbody.simulated) _rbody.simulated = true;
+        if(!_rbody.simulated) SetRBodySimulated(true);
 
         StartCoroutine(TimerToChangeRbodyParameters());
     }
@@ -56,6 +59,11 @@ public class Jump : MonoBehaviour
 
         _rbody.drag = _linearDragAfterTime;
         _rbody.gravityScale = _gravityScaleAfterTime;
+    }
+
+    void SetRBodySimulated(bool value)
+    {
+        _rbody.simulated = value;
     }
 
     void RotationAfterJump()

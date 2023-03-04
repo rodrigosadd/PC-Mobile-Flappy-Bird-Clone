@@ -9,6 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b09e0e367a1bb84e845581d3f8f5808, type: 3}
-  m_Name: Start Spawn Event Channel
+  m_Script: {fileID: 11500000, guid: 475eb1a92a614cc4e959c3709ad21b78, type: 3}
+  m_Name: Set Rbody Simulated Event Channel
   m_EditorClassIdentifier: 

@@ -439,6 +439,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rectTransform: {fileID: 7273060704891539963}
   _timeToDeactivate: 6
+  _canDeactivate: 0
+  _setCanDeactivatePoolableBoolChannel: {fileID: 11400000, guid: 1ac88df942600f741826f6f4004daea3, type: 2}
 --- !u!114 &6754101700699724206
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -452,13 +454,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rectTransform: {fileID: 7273060704891539963}
+  _speed: 100
   _balancingContainer: {fileID: 11400000, guid: 58f4c2ef287924646a8aa03b8d1e39ac, type: 2}
   spritesDataSO: {fileID: 11400000, guid: e33ee90a8aa181d478449b3837cbf249, type: 2}
-  _speed: 100
   _pipeDayUpSprite: {fileID: 7273060704980063763}
   _pipeDayDownSprite: {fileID: 7273060705343223518}
   _pipeNightUpSprite: {fileID: 7273060704017043056}
   _pipeNightDownSprite: {fileID: 7273060704700658675}
+  _setSpeedPipeFloatChannel: {fileID: 11400000, guid: d18096ab1593c3742adb338d24c06c7c, type: 2}
 --- !u!1 &7273060704980063763
 GameObject:
   m_ObjectHideFlags: 0

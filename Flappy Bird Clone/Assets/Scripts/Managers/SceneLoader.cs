@@ -1,16 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class SceneLoader : MonoBehaviour
 {
-    [Header("Channels")]
-    [SerializeField] private LoadEventChannelSO _locationLoadChannel;
-    [SerializeField] private VoidEventChannelSO _quitLoadChannel;
-
     [Header("Game Scene")]
     [SerializeField] private GameSceneSO _sceneAfterInitialization;
+
+    [Header("Channels")]
+    [SerializeField] private LoadEventChannelSO _locationLoadChannel;
+    [SerializeField] private VoidEventChannelSO _startTransitionVoidChannel;
+    [SerializeField] private VoidEventChannelSO _endTransitionVoidChannel;
 
     private bool _isLoading = false;
     private GameSceneSO _sceneToLoad = default;
@@ -18,14 +17,16 @@ public class SceneLoader : MonoBehaviour
 
     private void OnEnable()
     {
-        _locationLoadChannel.OnLoadRequested += LoadScene;
-        _quitLoadChannel.OnVoidRequested += QuitGame;
+        _locationLoadChannel.OnLoadRequested += LoadScene;        
+
+        _endTransitionVoidChannel.OnVoidRequested += UnloadPreviousScene;
     }
 
     private void OnDisable()
     {
         _locationLoadChannel.OnLoadRequested -= LoadScene;
-        _quitLoadChannel.OnVoidRequested -= QuitGame;
+
+        _endTransitionVoidChannel.OnVoidRequested -= UnloadPreviousScene;
     }
 
     void Start()
@@ -41,13 +42,13 @@ public class SceneLoader : MonoBehaviour
         _sceneToLoad = scene;
         _isLoading = true;
 
-        UnloadPreviousScene();
+        _startTransitionVoidChannel.RaiseEvent();        
     }
 
     void UnloadPreviousScene()
     {
         if (_currentlyLoadedScene.ToString() != null)
-        {
+        {            
             SceneManager.UnloadSceneAsync(_currentlyLoadedScene.sceneName);
         }
 
@@ -58,15 +59,10 @@ public class SceneLoader : MonoBehaviour
     {
         SceneManager.LoadSceneAsync(_sceneToLoad.sceneName, LoadSceneMode.Additive).completed += OnNewSceneLoaded;
     }
-
+     
     void OnNewSceneLoaded(AsyncOperation obj)
     {
         _currentlyLoadedScene = _sceneToLoad;
         _isLoading = false;
-    }
-
-    void QuitGame()
-    {
-        Application.Quit();
     }
 }

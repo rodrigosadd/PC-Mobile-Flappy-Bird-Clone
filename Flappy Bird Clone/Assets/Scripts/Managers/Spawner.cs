@@ -8,8 +8,9 @@ public class Spawner : MonoBehaviour
     [SerializeField] private BalancingContainerSO _balancingContainer;
 
 
-    [Header("Channel")]
-    [SerializeField] private VoidEventChannelSO _startSpawnVoidChannel;
+    [Header("Channels")]
+    [SerializeField] private BoolEventChannelSO _setCanSpawnBoolChannel;
+    [SerializeField] private VoidEventChannelSO _jumpVoidChannel;
 
     [Header("Spawn")]
     [SerializeField] private float _timeToNextSpawn;
@@ -21,13 +22,60 @@ public class Spawner : MonoBehaviour
     [SerializeField] private float _maxHeigth;
 
     PoolableObject _currentPoolableObj;
+    private float _timer;
 
     void OnEnable()
     {
-        _startSpawnVoidChannel.OnVoidRequested += SpawnCoroutine;
+        _setCanSpawnBoolChannel.OnBoolRequested += SetCanSpawn;
+        _jumpVoidChannel.OnVoidRequested += ChangeCanSpawnAfterFirstJump;
+    }
+
+    void OnDisable()
+    {
+        _setCanSpawnBoolChannel.OnBoolRequested -= SetCanSpawn;        
+        _jumpVoidChannel.OnVoidRequested -= ChangeCanSpawnAfterFirstJump;
     }
 
     void Start()
+    {
+        InitializeTimer();
+        CheckBalancingValues();
+    }
+
+    void Update()
+    {
+        SpawnAfterTime();
+    }
+
+    void SpawnAfterTime()
+    {
+        if (_canSpawn)
+        {
+            if (_timer <= 0f)
+            {
+                _currentPoolableObj = _poolObjects.GetMonoBehaviourFromPool();
+                _currentPoolableObj.rectTransform.anchoredPosition3D = new Vector3(_initialPosition, Random.Range(_minHeigth, _maxHeigth), _currentPoolableObj.rectTransform.localPosition.z);
+                _currentPoolableObj.rectTransform.localScale = Vector3.one;
+                _timer = _timeToNextSpawn;
+            }
+            else
+            {
+                _timer -= Time.deltaTime;
+            }
+        }
+    }
+
+    void InitializeTimer()
+    {
+        _timer = _timeToNextSpawn;
+    }
+
+    void SetCanSpawn(bool value)
+    {
+        _canSpawn = value;
+    }
+
+    void CheckBalancingValues()
     {
         if (_balancingContainer.timeSpawn > 0f)
         {
@@ -35,21 +83,8 @@ public class Spawner : MonoBehaviour
         }
     }
 
-    void SpawnCoroutine()
+    void ChangeCanSpawnAfterFirstJump()
     {
-        StopCoroutine(Spawn());
-        StartCoroutine(Spawn());
-        _startSpawnVoidChannel.OnVoidRequested -= SpawnCoroutine;
-    }
-
-    IEnumerator Spawn()
-    {
-        while (_canSpawn)
-        {
-            yield return new WaitForSeconds(_timeToNextSpawn);
-            _currentPoolableObj = _poolObjects.GetMonoBehaviourFromPool();
-            _currentPoolableObj.rectTransform.anchoredPosition3D = new Vector3(_initialPosition, Random.Range(_minHeigth, _maxHeigth), _currentPoolableObj.rectTransform.localPosition.z);
-            _currentPoolableObj.rectTransform.localScale = Vector3.one;
-        }
+        SetCanSpawn(true);
     }
 }

@@ -5,13 +5,24 @@ public class Bird : MonoBehaviour, ICollidable, IScorable
     [Header("Channels")]
     [SerializeField] private VoidEventChannelSO _collisionVoidChannel;
     [SerializeField] private IntEventChannelSO _scoreIntChannel;
+    [SerializeField] private BoolEventChannelSO _setActiveBirdAnimatorBoolChannel;
 
     [Header("Sprites")]
-    [SerializeField] private GameObject[] _birdColorSprites;
+    [SerializeField] private Animator[] _birdColorSprites;
+
+    void OnEnable()
+    {
+        _setActiveBirdAnimatorBoolChannel.OnBoolRequested += SetActiveAnimator;
+    }
+
+    void OnDisable()
+    {
+        _setActiveBirdAnimatorBoolChannel.OnBoolRequested -= SetActiveAnimator;        
+    }
 
     void Start()
     {
-        RandomDraw();
+        RandomDrawSprites();
     }
 
     public void Collision()
@@ -24,7 +35,7 @@ public class Bird : MonoBehaviour, ICollidable, IScorable
         _scoreIntChannel.RaiseEvent(1);
     }
 
-    void RandomDraw()
+    void RandomDrawSprites()
     {
         int random = Random.Range(0, _birdColorSprites.Length);
 
@@ -32,12 +43,20 @@ public class Bird : MonoBehaviour, ICollidable, IScorable
         {
             if (i == random)
             {
-                _birdColorSprites[i].SetActive(true);
+                _birdColorSprites[i].gameObject.SetActive(true);
             }
             else
             {
-                _birdColorSprites[i].SetActive(false);
+                _birdColorSprites[i].gameObject.SetActive(false);
             }
+        }
+    }
+
+    void SetActiveAnimator(bool value)
+    {
+        for (int i = 0; i < _birdColorSprites.Length; i++)
+        {
+            _birdColorSprites[i].enabled = value;
         }
     }
 }

@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Threading;
 using TMPro;
 using UnityEngine;
 
@@ -10,12 +11,30 @@ public class PoolableObject : MonoBehaviour, IMonoBehaviourPool, IPool
     [Header("Others")]
     public RectTransform rectTransform;
     [SerializeField] private float _timeToDeactivate = 2f;
+    [SerializeField] private bool _canDeactivate;
+
+    [Header("Channel")]
+    [SerializeField] private BoolEventChannelSO _setCanDeactivatePoolableBoolChannel;
 
     public bool IsBeenUsed { get; set; }
 
+    private float _timer;
+
     void OnEnable()
     {
-        StartCoroutine(CountdownToDeactivate());
+        InitializeTimer();
+
+        _setCanDeactivatePoolableBoolChannel.OnBoolRequested += SetCanDeactivate;
+    }
+
+    void OnDisable()
+    {
+        _setCanDeactivatePoolableBoolChannel.OnBoolRequested -= SetCanDeactivate;
+    }
+
+    void Update()
+    {
+        DeactivateAfterTime();
     }
 
     public void Reset()
@@ -24,9 +43,28 @@ public class PoolableObject : MonoBehaviour, IMonoBehaviourPool, IPool
         gameObject.SetActive(false);
     }
 
-    IEnumerator CountdownToDeactivate()
+    void DeactivateAfterTime()
     {
-        yield return new WaitForSeconds(_timeToDeactivate);
-        Reset();
+        if (_canDeactivate)
+        {
+            if (_timer <= 0f)
+            {
+                Reset();
+            }
+            else
+            {
+                _timer -= Time.deltaTime;
+            }
+        }
+    }
+
+    void InitializeTimer()
+    {
+        _timer = _timeToDeactivate;
+    }
+
+    void SetCanDeactivate(bool value)
+    {
+        _canDeactivate = value;
     }
 }
