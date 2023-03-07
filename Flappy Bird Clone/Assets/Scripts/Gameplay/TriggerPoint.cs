@@ -4,13 +4,11 @@ using UnityEngine;
 
 public class TriggerPoint : MonoBehaviour
 {
+    [SerializeField] private IntEventChannelSO _scoreIntChannel;
+    [SerializeField] private int _amountPoints;
+
     void OnTriggerEnter2D(Collider2D collision)
     {
-        IScorable scorable = collision.GetComponent<IScorable>();
-
-        if (scorable != null)
-        {
-            scorable.ScoredAPoint();
-        }
+        _scoreIntChannel.RaiseEvent(_amountPoints);
     }
 }

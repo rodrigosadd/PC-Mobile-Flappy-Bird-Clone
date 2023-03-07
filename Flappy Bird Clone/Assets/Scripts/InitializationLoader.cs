@@ -9,16 +9,16 @@ public class InitializationLoader : MonoBehaviour
 
     void Start()
     {
-        SceneManager.LoadSceneAsync(_managersScene.sceneName, LoadSceneMode.Additive).completed += LoadMainMenu;
+        UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(_managersScene.sceneName, LoadSceneMode.Additive).completed += LoadMainMenu;
     }
 
     void LoadMainMenu(AsyncOperation obj)
     {
-        SceneManager.LoadSceneAsync(_mainMenuScene.sceneName, LoadSceneMode.Additive).completed += UnloadInitializationScene;
+        UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(_mainMenuScene.sceneName, LoadSceneMode.Additive).completed += UnloadInitializationScene;
     }
 
     void UnloadInitializationScene(AsyncOperation obj)
     {
-        SceneManager.UnloadSceneAsync(0);
+        UnityEngine.SceneManagement.SceneManager.UnloadSceneAsync(0);
     }
 }

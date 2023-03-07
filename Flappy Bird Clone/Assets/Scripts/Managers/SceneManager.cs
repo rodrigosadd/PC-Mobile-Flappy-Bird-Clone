@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SceneLoader : MonoBehaviour
+public class SceneManager : MonoBehaviour
 {
     [Header("Game Scene")]
     [SerializeField] private GameSceneSO _sceneAfterInitialization;
@@ -17,19 +17,22 @@ public class SceneLoader : MonoBehaviour
 
     private void OnEnable()
     {
-        _locationLoadChannel.OnLoadRequested += LoadScene;        
-
+        _locationLoadChannel.OnLoadRequested += LoadScene;      
         _endTransitionVoidChannel.OnVoidRequested += UnloadPreviousScene;
     }
 
     private void OnDisable()
     {
         _locationLoadChannel.OnLoadRequested -= LoadScene;
-
         _endTransitionVoidChannel.OnVoidRequested -= UnloadPreviousScene;
     }
 
     void Start()
+    {
+        Initialization();
+    }
+
+    void Initialization()
     {
         _currentlyLoadedScene = _sceneAfterInitialization;
     }
@@ -48,8 +51,8 @@ public class SceneLoader : MonoBehaviour
     void UnloadPreviousScene()
     {
         if (_currentlyLoadedScene.ToString() != null)
-        {            
-            SceneManager.UnloadSceneAsync(_currentlyLoadedScene.sceneName);
+        {
+            UnityEngine.SceneManagement.SceneManager.UnloadSceneAsync(_currentlyLoadedScene.sceneName);
         }
 
         LoadNewScene();
@@ -57,7 +60,7 @@ public class SceneLoader : MonoBehaviour
 
     void LoadNewScene()
     {
-        SceneManager.LoadSceneAsync(_sceneToLoad.sceneName, LoadSceneMode.Additive).completed += OnNewSceneLoaded;
+        UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(_sceneToLoad.sceneName, LoadSceneMode.Additive).completed += OnNewSceneLoaded;
     }
      
     void OnNewSceneLoaded(AsyncOperation obj)

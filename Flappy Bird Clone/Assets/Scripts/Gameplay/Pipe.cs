@@ -33,17 +33,18 @@ public class Pipe : MonoBehaviour
 
     void Start()
     {
-        if (_balancingContainer.pipeSpeed > 0f)
-        {
-            _speed = _balancingContainer.pipeSpeed;
-        }
-
+        InitializeParameters();
         ActivateSprites(spritesDataSO.isDay);
     }
 
     void Update()
     {
         _rectTransform.anchoredPosition3D += Vector3.left * _speed * Time.deltaTime; 
+    }
+
+    void InitializeParameters()
+    {
+        SetSpeed(_balancingContainer.pipeSpeed);
     }
 
     void ActivateSprites(bool isDay)

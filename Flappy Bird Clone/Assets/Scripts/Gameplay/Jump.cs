@@ -6,6 +6,7 @@ public class Jump : MonoBehaviour
 {
     [Header("Jump")]
     [SerializeField] private Rigidbody2D _rbody;
+    [SerializeField] private BalancingContainerSO _balancingContainer;
     [SerializeField] private float _jumpForce;
     [SerializeField] private float _timeToChangeRbodyParameters;
     [SerializeField] private float _forceRotation;
@@ -34,9 +35,20 @@ public class Jump : MonoBehaviour
         _setRbodySimulatedBoolChannel.OnBoolRequested -= SetRBodySimulated;
     }
 
+    void Start()
+    {
+        InitializeParameters();
+    }
+
     private void Update()
     {
         RotationAfterJump();
+    }
+
+    void InitializeParameters()
+    {
+        _jumpForce = _balancingContainer.jumpForce;
+        _gravityScaleAfterTime = _balancingContainer.fallForce;
     }
 
     void Jumping()

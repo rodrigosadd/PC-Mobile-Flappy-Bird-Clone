@@ -1,14 +1,13 @@
 using UnityEngine;
 
-public class Bird : MonoBehaviour, ICollidable, IScorable
+public class Bird : MonoBehaviour, ICollidable
 {
-    [Header("Channels")]
-    [SerializeField] private VoidEventChannelSO _collisionVoidChannel;
-    [SerializeField] private IntEventChannelSO _scoreIntChannel;
-    [SerializeField] private BoolEventChannelSO _setActiveBirdAnimatorBoolChannel;
-
     [Header("Sprites")]
     [SerializeField] private Animator[] _birdColorSprites;
+
+    [Header("Channels")]
+    [SerializeField] private VoidEventChannelSO _collisionVoidChannel;
+    [SerializeField] private BoolEventChannelSO _setActiveBirdAnimatorBoolChannel;
 
     void OnEnable()
     {
@@ -22,7 +21,7 @@ public class Bird : MonoBehaviour, ICollidable, IScorable
 
     void Start()
     {
-        RandomDrawSprites();
+        DrawRandomSprites();
     }
 
     public void Collision()
@@ -30,12 +29,7 @@ public class Bird : MonoBehaviour, ICollidable, IScorable
         _collisionVoidChannel.RaiseEvent();
     }
 
-    public void ScoredAPoint()
-    {
-        _scoreIntChannel.RaiseEvent(1);
-    }
-
-    void RandomDrawSprites()
+    void DrawRandomSprites()
     {
         int random = Random.Range(0, _birdColorSprites.Length);
 

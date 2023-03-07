@@ -4,24 +4,22 @@ using UnityEngine.Events;
 
 public class GameManager : MonoBehaviour
 {
+    [Header("Balancing")]
+    [SerializeField] private BalancingContainerSO _balancingContainer;
+
+    [Header("Lost")] 
+
+    [SerializeField] private GameSceneSO _sceneAfterLost;
+
     [Header("Pause")]
     [SerializeField] private VoidEventChannelSO _pauseVoidChannel;
     [SerializeField] private VoidEventChannelSO _unpauseVoidChannel;
 
-    [Header("Lost")]
-    [SerializeField] private GameObject _lostPanel;
-    [SerializeField] private GameSceneSO _sceneAfterLost;
-
-    [Header("Score")]
-    [SerializeField] private TMP_Text _pointsText;
-    [SerializeField] private TMP_Text _finalPointsText;
-    [SerializeField] private int _points;
-
     [Header("Void Channels")]
     [SerializeField] private VoidEventChannelSO _collisionVoidChannel;
     [SerializeField] private VoidEventChannelSO _restartVoidChannel;
-    [SerializeField] private VoidEventChannelSO _resetTimeScaleVoidChannel;
     [SerializeField] private VoidEventChannelSO _quitLoadChannel;
+    [SerializeField] private VoidEventChannelSO _endTransitionVoidChannel;
 
     [Header("Bool Channels")]
     [SerializeField] private BoolEventChannelSO _setActiveInputsBoolChannel;
@@ -33,15 +31,9 @@ public class GameManager : MonoBehaviour
     [Header("Load Channels")]
     [SerializeField] private LoadEventChannelSO _locationLoadChannel;
 
-    [Header("Int Channels")]
-    [SerializeField] private IntEventChannelSO _scoreIntChannel;
-
     [Header("Float Channels")]
     [SerializeField] private FloatEventChannelSO _setSpeedPipeFloatChannel;
     [SerializeField] private FloatEventChannelSO _setSpeedGroundFloatChannel;
-
-    [Header("Event")]
-    [SerializeField] private UnityEvent _OnScored;
 
     void OnEnable()
     {
@@ -50,10 +42,7 @@ public class GameManager : MonoBehaviour
 
         _collisionVoidChannel.OnVoidRequested += OnLost;
         _restartVoidChannel.OnVoidRequested += Restart;
-        _resetTimeScaleVoidChannel.OnVoidRequested += ResetParameters;
-
-        _scoreIntChannel.OnIntRequested += SetScored;
-        _collisionVoidChannel.OnVoidRequested += SetFinalPoints;
+        _endTransitionVoidChannel.OnVoidRequested += ResetInputs;
 
         _quitLoadChannel.OnVoidRequested += QuitGame;
     }
@@ -64,14 +53,11 @@ public class GameManager : MonoBehaviour
 
         _collisionVoidChannel.OnVoidRequested -= OnLost;
         _restartVoidChannel.OnVoidRequested -= Restart;
-        _resetTimeScaleVoidChannel.OnVoidRequested -= ResetParameters;
-
-        _scoreIntChannel.OnIntRequested -= SetScored;
-        _collisionVoidChannel.OnVoidRequested -= SetFinalPoints;
+        _endTransitionVoidChannel.OnVoidRequested -= ResetInputs;
 
         _quitLoadChannel.OnVoidRequested -= QuitGame;
     }
-
+    
     void PauseGame()
     {
         _setActiveBirdAnimatorBoolChannel.RaiseEvent(false);
@@ -86,8 +72,8 @@ public class GameManager : MonoBehaviour
     {
         _setActiveBirdAnimatorBoolChannel.RaiseEvent(true);
         _setRbodySimulatedBoolChannel.RaiseEvent(true);
-        _setSpeedPipeFloatChannel.RaiseEvent(100f);
-        _setSpeedGroundFloatChannel.RaiseEvent(1f);
+        _setSpeedPipeFloatChannel.RaiseEvent(_balancingContainer.pipeSpeed);
+        _setSpeedGroundFloatChannel.RaiseEvent(_balancingContainer.groundSpeed);
         _setCanSpawnBoolChannel.RaiseEvent(true);
         _setCanDeactivatePoolableBoolChannel.RaiseEvent(true);
     }
@@ -100,27 +86,17 @@ public class GameManager : MonoBehaviour
         _setSpeedGroundFloatChannel.RaiseEvent(0f);
         _setCanSpawnBoolChannel.RaiseEvent(false);
         _setCanDeactivatePoolableBoolChannel.RaiseEvent(false);
-
-        _lostPanel.SetActive(true);
         _setActiveInputsBoolChannel.OnBoolRequested(false);
     }
 
     void Restart()
     {
-        _locationLoadChannel.RaiseEvent(_sceneAfterLost);
+        _locationLoadChannel.RaiseEvent(_sceneAfterLost);        
+    }
+
+    void ResetInputs()
+    {
         _setActiveInputsBoolChannel.OnBoolRequested(true);
-    }
-
-    void SetScored(int value)
-    {
-        _points += value;
-        _pointsText.text = _points.ToString();
-        _OnScored?.Invoke();
-    }
-
-    void SetFinalPoints()
-    {
-        _finalPointsText.text = _points.ToString();
     }
 
     void QuitGame()

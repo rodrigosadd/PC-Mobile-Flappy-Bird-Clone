@@ -38,8 +38,7 @@ public class Spawner : MonoBehaviour
 
     void Start()
     {
-        InitializeTimer();
-        CheckBalancingValues();
+        InitializeParameters();
     }
 
     void Update()
@@ -65,22 +64,15 @@ public class Spawner : MonoBehaviour
         }
     }
 
-    void InitializeTimer()
+    void InitializeParameters()
     {
+        _timeToNextSpawn = _balancingContainer.timeToNextSpawn;
         _timer = _timeToNextSpawn;
     }
 
     void SetCanSpawn(bool value)
     {
         _canSpawn = value;
-    }
-
-    void CheckBalancingValues()
-    {
-        if (_balancingContainer.timeSpawn > 0f)
-        {
-            _timeToNextSpawn = _balancingContainer.timeSpawn;
-        }
     }
 
     void ChangeCanSpawnAfterFirstJump()

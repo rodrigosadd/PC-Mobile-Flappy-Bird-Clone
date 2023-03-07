@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class TransitionController : MonoBehaviour
+public class TransitionHandler : MonoBehaviour
 {
     [Header("Others")]
     [SerializeField] private Animator _animator;

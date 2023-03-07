@@ -12,5 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03e42eef2914e634aa297551dbb36445, type: 3}
   m_Name: Balancing Container
   m_EditorClassIdentifier: 
-  pipeSpeed: 0
-  timeSpawn: 0
+  timeToNextSpawn: 2.5
+  pipeSpeed: 100
+  groundSpeed: 1
+  jumpForce: 25
+  fallForce: 30

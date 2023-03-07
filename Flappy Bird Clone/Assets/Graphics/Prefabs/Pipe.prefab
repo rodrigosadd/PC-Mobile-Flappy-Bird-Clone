@@ -50,6 +50,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55636c9892c9f5544ba634825a5ee4c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _scoreIntChannel: {fileID: 11400000, guid: 88fddfaf0e7b96841a88152123dee017, type: 2}
+  _amountPoints: 1
 --- !u!61 &6275914654773497643
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -454,7 +456,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rectTransform: {fileID: 7273060704891539963}
-  _speed: 100
+  _speed: 0
   _balancingContainer: {fileID: 11400000, guid: 58f4c2ef287924646a8aa03b8d1e39ac, type: 2}
   spritesDataSO: {fileID: 11400000, guid: e33ee90a8aa181d478449b3837cbf249, type: 2}
   _pipeDayUpSprite: {fileID: 7273060704980063763}

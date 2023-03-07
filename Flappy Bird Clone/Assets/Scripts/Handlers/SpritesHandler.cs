@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class SpritesManager : MonoBehaviour
+public class SpritesHandler : MonoBehaviour
 {
     [Header("SO")]
     [SerializeField] private SpritesDataSO spritesDataSO;
 
     void Awake()
     {
-        RandomDraw();
+        DrawRandomSprite();
     }
 
-    void RandomDraw()
+    void DrawRandomSprite()
     {
         int random = Random.Range(0, 10);
 
