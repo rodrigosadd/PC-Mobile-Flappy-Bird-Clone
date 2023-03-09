@@ -13,9 +13,5 @@ public class FloatEventChannelSO : ScriptableObject
         {
             OnFloatRequested.Invoke(value);
         }
-        else
-        {
-            Debug.LogError("Float Requested is Null!!!");
-        }
     }
 }

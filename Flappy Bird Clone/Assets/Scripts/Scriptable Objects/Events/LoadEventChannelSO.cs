@@ -12,9 +12,5 @@ public class LoadEventChannelSO : ScriptableObject
         {
             OnLoadRequested.Invoke(gameScene);
         }
-        else
-        {
-            Debug.LogError("Load Requested is Null!!!");
-        }
     }
 }

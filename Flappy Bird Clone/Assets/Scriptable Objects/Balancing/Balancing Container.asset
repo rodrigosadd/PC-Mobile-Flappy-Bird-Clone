@@ -16,4 +16,4 @@ MonoBehaviour:
   pipeSpeed: 100
   groundSpeed: 1
   jumpForce: 25
-  fallForce: 30
+  fallForce: 40

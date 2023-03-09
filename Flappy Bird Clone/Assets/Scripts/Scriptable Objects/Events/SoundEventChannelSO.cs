@@ -12,9 +12,5 @@ public class SoundEventChannelSO : ScriptableObject
         {
             OnSoundRequested.Invoke(sound);
         }
-        else
-        {
-            Debug.LogError("Sound Requested is Null!!!");
-        }
     }
 }

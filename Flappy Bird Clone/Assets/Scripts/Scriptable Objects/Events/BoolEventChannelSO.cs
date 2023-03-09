@@ -12,9 +12,5 @@ public class BoolEventChannelSO : ScriptableObject
         {
             OnBoolRequested.Invoke(value);
         }
-        else
-        {
-            Debug.LogError("Bool Requested is Null!!!");
-        }
     }
 }

@@ -9,6 +9,11 @@ public class VoidEventListener : MonoBehaviour
     [Header("Event")]
     public UnityEvent OnEventRised;
 
+    void OnDisable()
+    {
+        DeleteSignature();
+    }
+
     private void Start()
     {
         voidEventChannelSO.OnVoidRequested += RiseEvent;

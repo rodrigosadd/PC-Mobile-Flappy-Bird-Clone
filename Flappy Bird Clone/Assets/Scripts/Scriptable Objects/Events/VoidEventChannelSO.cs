@@ -12,9 +12,5 @@ public class VoidEventChannelSO : ScriptableObject
         {
             OnVoidRequested.Invoke();
         }
-        else
-        {
-            Debug.LogError("Void Requested is Null!!!");
-        }
     }
 }

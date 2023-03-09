@@ -12,9 +12,5 @@ public class IntEventChannelSO : ScriptableObject
         {
             OnIntRequested.Invoke(value);
         }
-        else
-        {
-            Debug.LogError("Int Requested is Null!!!");
-        }
     }
 }

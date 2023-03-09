@@ -1252,8 +1252,8 @@ MonoBehaviour:
   _diamondScorePanel: {fileID: 1981870065}
   _currentScore: 0
   _bronzeScore: 10
-  _silverScore: 20
-  _goldScore: 30
+  _silverScore: 15
+  _goldScore: 20
   _scoreIntChannel: {fileID: 11400000, guid: 88fddfaf0e7b96841a88152123dee017, type: 2}
   _collisionVoidChannel: {fileID: 11400000, guid: 7273e09a5b3ea98458e7ce426f146e56, type: 2}
   _OnScored:
